@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iron-Order – ZvZ Builds</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: #0b0e14 url('https://i.imgur.com/your-fort-sterling-bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #e0e0e0;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .overlay {
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.9);
+  }
+  h1 {
+    text-align: center;
+    font-size: 3em;
+    letter-spacing: 6px;
+    color: #a0c4ff;
+    text-shadow: 0 0 15px #3a6ea5;
+    margin-bottom: 5px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 1.2em;
+    color: #8899aa;
+    margin-bottom: 40px;
+    letter-spacing: 2px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+  }
+  .category {
+    background: rgba(20, 25, 35, 0.9);
+    border: 1px solid #2a3a5a;
+    border-radius: 12px;
+    padding: 15px;
+    transition: border-color 0.3s;
+  }
+  .category:hover {
+    border-color: #4a6a9a;
+  }
+  .category h2 {
+    text-align: center;
+    font-size: 1.3em;
+    color: #7aa2f7;
+    border-bottom: 1px solid #2a3a5a;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+  .item {
+    width: 70px;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #3a4a6a;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+    position: relative;
+    padding: 4px;
+  }
+  .item:hover {
+    transform: scale(1.1);
+    border-color: #7aa2f7;
+    z-index: 10;
+  }
+  .item img {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    display: block;
+    border-radius: 6px;
+  }
+  .item .fallback {
+    font-size: 1.8em;
+    display: none;
+  }
+  .item .label {
+    font-size: 0.6em;
+    text-align: center;
+    color: #ccd;
+    margin-top: 2px;
+    line-height: 1.1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+  /* Modal */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+  }
+  .modal.active {
+    display: flex;
+  }
+  .modal-content {
+    background: #141a24;
+    border: 2px solid #3a6ea5;
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 0 50px rgba(58, 110, 165, 0.5);
+    position: relative;
+  }
+  .modal-content h3 {
+    color: #a0c4ff;
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .modal-content .role-badge {
+    display: inline-block;
+    background: #2a3a5a;
+    color: #7aa2f7;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .modal-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  .modal-content td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #2a3a5a;
+    font-size: 1em;
+  }
+  .modal-content td:first-child {
+    color: #8899aa;
+    font-weight: 600;
+    width: 120px;
+  }
+  .modal-content td:last-child {
+    color: #e0e0e0;
+  }
+  .modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.8em;
+    color: #8899aa;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .modal-content .close:hover {
+    color: #ff6b6b;
+  }
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.9em;
+    color: #556677;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+<div class="overlay">
+  <h1>IRON-ORDER</h1>
+  <div class="subtitle">Fort Sterling – Faction Warfare | Kite &amp; Clamp</div>
+  <div id="app" class="grid"></div>
+  <div class="footer">Iron-Order • Fort Sterling • Click a weapon to see the build</div>
+</div>
+
+<!-- Modal -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h3 id="modalTitle"></h3>
+    <div id="modalRole" class="role-badge"></div>
+    <table id="modalTable"></table>
+  </div>
+</div>
+
+<script>
+// ===== DATA FROM THE SPREADSHEET (with corrected IDs) =====
+const builds = [
+  { role: "Offensive Tank", weapon: "Earthrune", offHand: "N/A", helmet: "Soldier Helmet", armor: "Judicator Armor", boots: "Hunter Shoes", food: "Lurcher Sandwich", potion: "Gigantify Potion", cape: "Morgana Cape", icon: "T8_2H_SHAPESHIFTER_KEEPER" },
+  { role: "Peel Tank", weapon: "Bedrock", offHand: "Astral Aegis/Mistcaller", helmet: "Assassin Hood", armor: "Demon Armor", boots: "Royal Shoes/Cleric Sandals", food: "Lurcher Sandwich", potion: "Gigantify Potion", cape: "Smuggler's Cape", icon: "T8_MAIN_ROCKMACE_KEEPER" },
+  { role: "Peel Tank", weapon: "1h Mace", offHand: "Leering Cane", helmet: "Judicator Helmet", armor: "Duskweaver/Guardian Armor", boots: "Royal Shoes/Cleric Sandals", food: "Avalonian Pork Omelette", potion: "Gigantify Potion", cape: "Smuggler's Cape", icon: "T8_MAIN_MACE" },
+  { role: "Defensive Tank", weapon: "Great Arcane", offHand: "N/A", helmet: "Assassin Hood", armor: "Duskweaver Armor/Knight Armor", boots: "Royal Shoes/Cleric Sandals", food: "Avalonian Pork Omelette", potion: "Gigantify Potion", cape: "Smuggler's Cape", icon: "T8_2H_ARCANESTAFF" },
+  { role: "Defensive Tank", weapon: "Polehammer", offHand: "N/A", helmet: "Judicator Helmet", armor: "Knight Armor", boots: "Royal Shoes/Cleric Sandals", food: "Avalonian Pork Omelette", potion: "Gigantify Potion", cape: "Smuggler's Cape", icon: "T8_2H_POLEHAMMER" },
+  { role: "Front Healer", weapon: "Hallowfall", offHand: "Celestial Censer", helmet: "Druid Cowl", armor: "Judicator Armor", boots: "Cleric Sandals/Royal Shoes", food: "Avalonian Pork Omelette", potion: "Gigantify Potion", cape: "Lymhurst Cape", icon: "T8_MAIN_HOLYSTAFF_AVALON" },
+  { role: "Front Healer", weapon: "Exalted Staff", offHand: "N/A", helmet: "Druid Cowl", armor: "Judicator Armor", boots: "Cleric Sandals/Royal Shoes", food: "Avalonian Pork Omelette", potion: "Gigantify Potion", cape: "Lymhurst Cape", icon: "T8_2H_HOLYSTAFF_CRYSTAL" },
+  { role: "Healer", weapon: "Hallowfall", offHand: "Mistcaller", helmet: "Druid Cowl", armor: "Feyscale Robe/Robe of Purity", boots: "Cleric Sandals/Royal Shoes", food: "Avalonian Pork Omelette", potion: "Gigantify Potion", cape: "Lymhurst Cape", icon: "T8_MAIN_HOLYSTAFF_AVALON" },
+  { role: "Healer", weapon: "Fallen", offHand: "N/A", helmet: "Druid Cowl", armor: "Feyscale Robe/Robe of Purity", boots: "Cleric Sandals/Royal Shoes", food: "Avalonian Pork Omelette", potion: "Gigantify Potion", cape: "Lymhurst Cape", icon: "T8_2H_HOLYSTAFF_HELL" },
+  { role: "Healer", weapon: "Blight Staff", offHand: "N/A", helmet: "Assassin Hood/Druid Cowl", armor: "Mistwalker Jacket", boots: "Cleric Sandals/Royal Shoes", food: "Avalonian Pork Omelette", potion: "Gigantify Potion", cape: "Lymhurst Cape", icon: "T8_2H_NATURESTAFF_HELL" },
+  { role: "Healer", weapon: "Wild Staff", offHand: "N/A", helmet: "Druid Cowl", armor: "Feyscale Robe/Robe of Purity", boots: "Cleric Sandals/Royal Shoes", food: "Avalonian Pork Omelette", potion: "Gigantify Potion", cape: "Lymhurst Cape", icon: "T8_2H_WILDSTAFF" },
+  { role: "Support", weapon: "Locus", offHand: "N/A", helmet: "Assassin Hood", armor: "Demon Armor", boots: "Guardian Boots/Graveguard Boots", food: "Avalonian Pork Omelette", potion: "Gigantify Potion", cape: "Smuggler's Cape", icon: "T8_2H_ENIGMATICORB_MORGANA" },
+  { role: "Support", weapon: "Enigmatic", offHand: "N/A", helmet: "Assassin Hood", armor: "Demon Armor", boots: "Guardian Boots/Graveguard Boots", food: "Avalonian Pork Omelette", potion: "Gigantify Potion", cape: "Smuggler's Cape", icon: "T8_2H_ENIGMATICSTAFF" },
+  { role: "Support", weapon: "Occult Staff", offHand: "N/A", helmet: "Assassin Hood", armor: "Demon Armor/Royal Jacket", boots: "Stalker Shoes", food: "Avalonian Pork Omelette", potion: "Gigantify Potion", cape: "Smuggler's Cape", icon: "T8_2H_ARCANESTAFF_HELL" },
+  { role: "Support", weapon: "Arcane", offHand: "Mistcaller", helmet: "Assassin Hood", armor: "Demon Armor", boots: "Cleric Sandals/Royal Shoes", food: "Avalonian Pork Omelette", potion: "Gigantify Potion", cape: "Smuggler's Cape", icon: "T8_MAIN_ARCANESTAFF" },
+  { role: "Support", weapon: "Oathkeepers", offHand: "N/A", helmet: "Assassin Hood", armor: "Demon Armor", boots: "Guardian Boots/Graveguard Boots", food: "Lurcher Sandwich", potion: "Gigantify Potion", cape: "Smuggler's Cape", icon: "T8_2H_DUALMACE_AVALON" },
+  { role: "Support", weapon: "Rootbound", offHand: "N/A", helmet: "Assassin Hood", armor: "Judicator Armor", boots: "Stalker Shoes", food: "Avalonian Pork Omelette", potion: "Gigantify Potion", cape: "Lymhurst Cape", icon: "T8_2H_SHAPESHIFTER_SET2" },
+  { role: "Support", weapon: "Lifecurse", offHand: "Astral Aegis/Mistcaller", helmet: "Assassin Hood", armor: "Demon Armor", boots: "Stalker Shoes", food: "Avalonian Pork Omelette", potion: "Gigantify Potion", cape: "Smuggler's Cape", icon: "T8_MAIN_CURSEDSTAFF_UNDEAD" },
+  { role: "Support", weapon: "Damnation", offHand: "N/A", helmet: "Assassin Hood", armor: "Scholar Robe", boots: "Stalker Shoes", food: "Avalonian Pork Omelette", potion: "Gigantify Potion", cape: "Smuggler's Cape", icon: "T8_2H_CURSEDSTAFF_MORGANA" },
+  { role: "Support", weapon: "Realmbreaker", offHand: "N/A", helmet: "Knight Helmet", armor: "Royal Jacket", boots: "Stalker Shoes", food: "Avalonian Pork Omelette", potion: "Gigantify Potion", cape: "Smuggler's Cape", icon: "T8_2H_AXE_AVALON" },
+  { role: "Support", weapon: "Carving Sword", offHand: "N/A", helmet: "Knight Helmet", armor: "Demon Armor", boots: "Graveguard Boots", food: "Avalonian Pork Omelette", potion: "Gigantify Potion", cape: "Smuggler's Cape", icon: "T8_2H_CLEAVER_HELL" },
+  { role: "Support", weapon: "Spirithunter", offHand: "N/A", helmet: "Assassin Hood", armor: "Royal Jacket", boots: "Stalker Shoes", food: "Avalonian Pork Omelette", potion: "Gigantify Potion", cape: "Smuggler's Cape", icon: "T8_2H_HARPOON_HELL" },
+  { role: "Support", weapon: "Rotcaller", offHand: "Astral Aegis/Mistcaller", helmet: "Assassin Hood", armor: "Demon Armor", boots: "Stalker Shoes", food: "Avalonian Pork Omelette", potion: "Gigantify Potion", cape: "Smuggler's Cape", icon: "T8_MAIN_CURSEDSTAFF_CRYSTAL" },
+  { role: "Melee DPS", weapon: "Battle Bracers", offHand: "N/A", helmet: "Soldier Helmet", armor: "Jacket of Tenacity/Hellion Jacket", boots: "Stalker Shoes", food: "Beef Stew", potion: "Gigantify Potion", cape: "Smuggler's Cape", icon: "T8_2H_KNUCKLES_SET2" },
+  { role: "Melee DPS", weapon: "Spiked", offHand: "N/A", helmet: "Knight Helmet", armor: "Jacket of Tenacity", boots: "Stalker Shoes", food: "Beef Stew", potion: "Gigantify Potion", cape: "Smuggler's Cape", icon: "T8_2H_KNUCKLES_SET3" },
+  { role: "Ranged DPS", weapon: "Permafrost", offHand: "N/A", helmet: "Assassin Hood", armor: "Robe of Purity/Scholar Robe", boots: "Stalker Shoes", food: "Beef Stew", potion: "Gigantify Potion", cape: "Morgana Cape", icon: "T8_2H_ICECRYSTAL_UNDEAD" },
+  { role: "Ranged DPS", weapon: "Rift Glaive", offHand: "N/A", helmet: "Assassin Hood", armor: "Jacket of Tenacity", boots: "Stalker Shoes", food: "Beef Stew", potion: "Gigantify Potion", cape: "Smuggler's Cape", icon: "T8_2H_GLAIVE_CRYSTAL" },
+  { role: "Ranged DPS", weapon: "Wailing Bow", offHand: "N/A", helmet: "Assassin Hood", armor: "Robe of Purity", boots: "Stalker Shoes", food: "Beef Stew", potion: "Gigantify Potion", cape: "Smuggler's Cape", icon: "T8_2H_BOW_HELL" },
+  // 👇 FIXED DAWNSONG 👇
+  { role: "Ranged DPS", weapon: "Dawnsong", offHand: "N/A", helmet: "Assassin Hood", armor: "Robe of Purity", boots: "Stalker Shoes", food: "Beef Stew", potion: "Gigantify Potion", cape: "Smuggler's Cape", icon: "T8_2H_FIRE_RINGPAIR_AVALON" },
+  // 👇 FIXED ENERGYSHAPER 👇
+  { role: "Ranged DPS", weapon: "Energyshaper", offHand: "N/A", helmet: "Assassin Hood", armor: "Cleric Robe", boots: "Stalker Shoes", food: "Beef Stew", potion: "Gigantify Potion", cape: "Morgana Cape", icon: "T8_2H_CROSSBOW_CANNON_AVALON" },
+  { role: "Ranged DPS", weapon: "Longbow", offHand: "N/A", helmet: "Assassin Hood", armor: "Cleric Robe/Jacket of Tenacity", boots: "Stalker Shoes", food: "Beef Stew", potion: "Gigantify Potion", cape: "Smuggler's Cape", icon: "T8_2H_LONGBOW" }
+];
+
+// ===== RENDERING =====
+const rolesOrder = ["Offensive Tank", "Peel Tank", "Defensive Tank", "Front Healer", "Healer", "Support", "Melee DPS", "Ranged DPS"];
+const app = document.getElementById('app');
+
+rolesOrder.forEach(role => {
+  const roleBuilds = builds.filter(b => b.role === role);
+  if (roleBuilds.length === 0) return;
+
+  const cat = document.createElement('div');
+  cat.className = 'category';
+  cat.innerHTML = `<h2>${getRoleIcon(role)} ${role}</h2>`;
+
+  const itemsDiv = document.createElement('div');
+  itemsDiv.className = 'items';
+
+  roleBuilds.forEach(build => {
+    const item = document.createElement('div');
+    item.className = 'item';
+    item.title = build.weapon;
+
+    const img = document.createElement('img');
+    img.src = `https://render.albiononline.com/v1/item/${build.icon}.png`;
+    img.alt = build.weapon;
+    img.onerror = function() {
+      this.style.display = 'none';
+      this.nextElementSibling.style.display = 'block';
+    };
+
+    const fallback = document.createElement('span');
+    fallback.className = 'fallback';
+    fallback.textContent = '⚔️';
+
+    const label = document.createElement('span');
+    label.className = 'label';
+    label.textContent = build.weapon;
+
+    item.appendChild(img);
+    item.appendChild(fallback);
+    item.appendChild(label);
+
+    item.addEventListener('click', () => openModal(build));
+    itemsDiv.appendChild(item);
+  });
+
+  cat.appendChild(itemsDiv);
+  app.appendChild(cat);
+});
+
+function getRoleIcon(role) {
+  const icons = {
+    "Offensive Tank": "🛡️",
+    "Peel Tank": "🛡️",
+    "Defensive Tank": "🛡️",
+    "Front Healer": "💚",
+    "Healer": "💚",
+    "Support": "❄️",
+    "Melee DPS": "🗡️",
+    "Ranged DPS": "🏹"
+  };
+  return icons[role] || "⚔️";
+}
+
+// ===== MODAL =====
+const modal = document.getElementById('modal');
+const modalTitle = document.getElementById('modalTitle');
+const modalRole = document.getElementById('modalRole');
+const modalTable = document.getElementById('modalTable');
+
+function openModal(build) {
+  modalTitle.textContent = build.weapon;
+  modalRole.textContent = build.role;
+
+  // Build rows – skip Off Hand if value is "N/A"
+  const rows = [];
+  if (build.offHand && build.offHand !== "N/A") {
+    rows.push(['Off Hand', build.offHand]);
+  }
+  rows.push(['Helmet', build.helmet]);
+  rows.push(['Armor', build.armor]);
+  rows.push(['Boots', build.boots]);
+  rows.push(['Food', build.food]);
+  rows.push(['Potion', build.potion]);
+  rows.push(['Cape', build.cape]);
+
+  modalTable.innerHTML = rows.map(([label, value]) =>
+    `<tr><td>${label}</td><td>${value}</td></tr>`
+  ).join('');
+
+  modal.classList.add('active');
+}
+
+function closeModal() {
+  modal.classList.remove('active');
+}
+
+modal.addEventListener('click', (e) => {
+  if (e.target === modal) closeModal();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+</script>
+</body>
+</html>
